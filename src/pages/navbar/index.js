@@ -14,8 +14,8 @@ export default function NavBar() {
             <div className={styles.subnavbar}>
                 <div className={styles.logo} />
                 <div className={styles.links}>
-                    <Link to='/home' className={styles.links__link}>Home</Link>
-                    <Link to='/add' className={styles.links__link}>Adicionar</Link>
+                    <Link to='/home' className={styles.links_link}>Home</Link>
+                    <Link to='/add' className={styles.links_link}> Adicionar</Link>
                 </div>
             </div>
         </Nav>
