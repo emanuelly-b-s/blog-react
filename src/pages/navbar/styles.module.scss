@@ -1,6 +1,4 @@
-
-
-.subnavbar{
+.subnavbar {
     width: 100%;
     justify-content: space-between;
     display: flex;
@@ -8,15 +6,26 @@
     flex-direction: row;
 
 
-    .links{
+    .links {
         display: flex;
         justify-content: center;
         align-items: center;
     }
 
-    .links_link{
-        margin-left:3rem ;
+    .links_link {
+        margin-left: 3rem;
     }
+
+    .logo {
+        background-image: url('../../image/logo.svg');
+        background-repeat: no-repeat;
+        height: 4rem;
+        width: 15%;
+        background-position: center;
+        background-size: cover;
+        object-fit: cover;
+    }
+
 }
 
 .navbar {
@@ -33,8 +42,8 @@
 }
 
 .navbar-expand {
-     flex-wrap: wrap; 
-     justify-content: flex-start; 
+    flex-wrap: wrap;
+    justify-content: flex-start;
 }
 
 .supergraphic {
@@ -46,16 +55,3 @@
     background-size: cover;
     object-fit: cover;
 }
-
-
-.logo {
-    background-image: url('../../image/logo.svg');
-    background-repeat: no-repeat;
-    height: 4rem;
-    width: 15%;
-    background-position: center;
-    background-size: cover;
-    object-fit: cover;
-}
-
-
