@@ -1,3 +1,4 @@
+-------------------------------------------------------------------------- FRONT --------------------------------------------------------------------------
 step by step:
 
 start react project
@@ -17,3 +18,28 @@ about security
 install sass
 
 -   $npm install sass
+
+
+-------------------------------------------------------------------------- BACK --------------------------------------------------------------------------
+step by step:
+
+start npm
+
+-   $npm init -y
+
+for run a file
+-   $node yourfile.js
+
+install express framework node.js and install lib mongo ODM
+- $npm i mongoose
+
+install nodemon
+- $npm i body-parser config express nodemon    
+in package-lock.json file, insert in "scripts":
+    "start": "nodemon index.js"
+
+install dotenv
+-   $npm i dotenv || npm i dotenv bcryptjs jsonwebtoken
+
+install cors
+-   $npm i cors
