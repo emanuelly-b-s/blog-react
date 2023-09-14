@@ -1,0 +1,44 @@
+.links__link {
+    color: aliceblue;
+}
+
+
+.links {}
+
+.nav{
+    flex-wrap: wrap;
+    padding: 0;
+}
+
+.supergraphic{
+    background-image: url('../../image/boschGradient.svg');
+    background-repeat: no-repeat;
+    height: 0.5rem;
+    width: 100%;
+    background-position: center;
+    background-size: 100vw 100vh;
+    object-fit: cover;
+}
+
+
+.logo{
+    background-image: url('../../image/logo.svg');
+    background-repeat: no-repeat;
+    height: 4rem;
+    width: 10%;
+    background-position: center;
+    background-size: 10vw 10vh;
+    object-fit: cover;
+}
+
+
+.nav_image {
+    background-image: '../../image/boschGradient.svg';
+    height: 100%;
+    /* A imagem ocupará toda a altura do Navbar */
+    width: 100%;
+    max-height: 100px;
+    min-width: 100%
+    /* Defina uma altura máxima se desejar limitar a altura da imagem */
+
+}
