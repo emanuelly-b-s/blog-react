@@ -46,6 +46,7 @@ body {
 .navbar-expand {
     flex-wrap: wrap;
     justify-content: flex-start;
+    width: 100%;
 }
 
 .supergraphic {
@@ -56,4 +57,22 @@ body {
     background-position: center;
     background-size: cover;
     object-fit: cover;
+}
+
+.container,
+.container-fluid,
+.container-lg,
+.container-md,
+.container-sm,
+.container-xl,
+.container-xxl {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    min-width: 100%;
+    padding: 0;
+    margin: 0;
+    /* padding-right: calc(var(--bs-gutter-x) * .5); */
+    /* padding-left: calc(var(--bs-gutter-x) * .5); */
+    /* margin-right: auto; */
+    /* margin-left: auto; */
 }
