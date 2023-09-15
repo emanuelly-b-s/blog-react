@@ -4,5 +4,5 @@ const auth = require('../routes/auth')
 module.exports = function (app) {
     app.use(express.json());
     // app.use('/api/person', person);
-    app.use('/blog/auth', auth);
+    app.use('/blog', auth);
 }
