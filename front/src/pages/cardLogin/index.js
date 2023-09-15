@@ -13,10 +13,24 @@ export default function CardLogin() {
     var [email, setEmail] = useState('');
     var [pass, setPass] = useState('');
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
         if (!formValid()) return
-        navigate('/home')
+        const json = {
+            email, password
+        }
+        try {
+            const jsonCrypt = CryptoJS.AES.encrypt(JSON.stringify(json), SECRET).toString();
+            var res = await axios.post('http://localhost:8080/api/login', {
+                jsonCrypt
+            })
+            sessionStorage.setItem('token', res.data.token);
+            navigate('/home')
+        } catch (error) {
+            setMessage('Erro ao se conectar');
+            setShow(true);
+            setVariant('danger');
+        }
     }
 
     function formValid() {
