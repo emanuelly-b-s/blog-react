@@ -1,3 +1,7 @@
+body {
+    width: 100%;
+}
+
 .subnavbar {
     width: 100%;
     justify-content: space-between;
@@ -20,9 +24,8 @@
         background-image: url('../../image/logo.svg');
         background-repeat: no-repeat;
         height: 4em;
-        width: 40%;
-        background-position: center;
-        object-fit: cover;
+        min-width: 9em;
+        // object-fit: cover;
     }
 
 }
