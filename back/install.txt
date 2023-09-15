@@ -24,7 +24,6 @@ install sass
 step by step:
 
 start npm
-
 -   $npm init -y
 
 for run a file
@@ -35,7 +34,7 @@ install express framework node.js and install lib mongo ODM
 
 install nodemon
 - $npm i body-parser config express nodemon    
-in package-lock.json file, insert in "scripts":
+in package.json file, insert in "scripts":
     "start": "nodemon index.js"
 
 install dotenv
