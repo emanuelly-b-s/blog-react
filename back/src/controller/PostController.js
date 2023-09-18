@@ -1,83 +1,80 @@
-const User = require('../model/login');
 const Post = require('../model/post');
+const User = require('../model/user');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
-var CryptoJS = require("crypto-js");
-
 require('dotenv').config();
 
+var CryptoJS = require('crypto-js')
+
+const UserController = require('./UserController');
+const fs = require('fs');
+const path = require('path');
 class PostController {
-
-    static async addPost(req, res) {
-
-        const { title, text, likes } = req.body;
-
-        if (!title || !text )
-            return res.status(400).send({ message: "n deu" });
-
-        try {
-            if (await User.findOne({ email }))
-                return res.status(400).send({ message: "email ja cadastrado" });
-
-            const passwordCrypt = CryptoJS.AES.encrypt(password, 'A').toString();
-
-            const newPost = new User({
-                name: name,
-                email: email,
-                password: passwordCrypt
-            });
-
-            await newUser.save();
-            return res.status(201).send({ message: "user created" });
-        } catch (error) {
-            return res.status(500).send({ message: "something faild" });
-        }
+    static createLog(error) {
+        const timestamp = Date.now();
+        const archivePath = path.resolve(__dirname, '..', `logs-${timestamp}.txt`);
+        const errorString = JSON.stringify(error.message)
+        fs.writeFile(archivePath, errorString, function (err, result) {
+            if (err) console.log(err)
+        })
     }
-
-    static async login(req, res) {
-        const { jsonCrypt } = req.body
-        console.log()
-        const json = CryptoJS.AES.decrypt(jsonCrypt, 'A').toString(CryptoJS.enc.Utf8);
-
-        const { email, password } = JSON.parse(json);
-
-        console.log(email, password)
-
-
-        if (!email || !password)
-            return res.status(400).send({ message: "Email or password not provider" });
+    static async getAll(req, res) {
+        let page = req.params.page;
+        let limit = 5;
+        let skip = limit * (page - 1);
         try {
-            const user = await User.findOne({ email });
-            if (!user)
-                return res.status(400).send({ message: "Invalid Email" });
-            const passData = CryptoJS.AES.decrypt(user.password, 'A').toString(CryptoJS.enc.Utf8);
-
-           
-
-            if (passData != password) {
-                return res.status(400).send({ message: "Invalid password" });
-            }
-
-            const secret = 'A';
-            console.log(secret);
-
-            const token = jwt.sign(
-                {
-                    id: user._id,
-                },
-                secret,
-                {
-                    expiresIn: '1 day'
-                }
-            );
-            console.log('a');
-            return res.status(200).send({ token: token });
+            const Posts = await Post.find().skip(skip).limit(limit);
+            return res.status(200).send(Posts);
         } catch (error) {
-            console.log(error);
-            return res.status(500).send({ message: "something wrong" });
+            PostController.createLog(error);
+            return res.status(500).send({ message: "Falha ao carregar os Artigos" })
+        }
+    };
+
+    static async create(req, res) {
+        const { title, text, authorid } = req.body;
+
+        if (!title || !text || !authorid)
+            return res.status(400).send({ message: "os campos não podem estarem vazios " });
+
+        if (title.length < 3)
+            return res.status(400).send({ message: "o titulo não pode ser menor que 3 caracteres" });
+
+        if (text.length < 15)
+            return res.status(400).send({ message: "o artigo não pode ser menor que 15 caracteres" });
+
+        if (authorid.length < 3)
+            return res.status(400).send({ message: "O autor não pode ser menor que 3 caracteres" });
+
+        try {
+            const author = await UserController.getAuthor(authorid);
+            const Post = {
+                title,
+                text,
+                likes: 0,
+                author,
+                createdAt: Date.now(),
+                updatedAt: Date.now(),
+                removedAt: null,
+            }
+            await Post.create(Post)
+            return res.status(201).send({ message: "Artigo criado com sucesso" });
+        } catch (error) {
+            PostController.createLog(error);
+            return res.status(500).send({ error: "Falha ao salvar o artigo", data: error.message });
+        }
+    };
+
+    static async likePost(req, res) {
+        const { id } = req.params;
+        if (!id) return res.status(400).send({ message: "No id provider" })
+        try {
+            const Post = await Post.findById(id);
+            await Post.findByIdAndUpdate({ _id: id }, { likes: ++Post.likes })
+            return res.status(200).send();
+        } catch (error) {
+            PostController.createLog(error);
+            return res.status(500).send({ error: "Falha ao curtir", data: error.message })
         }
     }
 }
-
-
-module.exports = AuthController
+module.exports = PostController;

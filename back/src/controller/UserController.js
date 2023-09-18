@@ -1,4 +1,4 @@
-const User = require('../model/login');
+const User = require('../model/user');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 var CryptoJS = require("crypto-js");
@@ -9,7 +9,6 @@ class AuthController {
     static async register(req, res) {
 
         const { jsonCrypt } = req.body;
-        console.log(req.body)
         const json = CryptoJS.AES.decrypt(jsonCrypt, 'A').toString(CryptoJS.enc.Utf8);
         const { name, email, password } = JSON.parse(json);
 

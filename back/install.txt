@@ -15,8 +15,8 @@ about security
 
 -   $npm i jwt-decode
 -   $npm i crypto-js
-install sass
 
+install sass
 -   $npm install sass
 
 

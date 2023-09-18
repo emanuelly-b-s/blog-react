@@ -1,11 +1,12 @@
 const express = require('express');
-const AuthController = require('../controller/AuthController');
+const PostController = require('../controller/PostController');
+const AuthController = require('../controller/UserController');
 const router = express.Router();
 
 router
     .post('/', AuthController.register)
     .post('/auth/login', AuthController.login)
-    .post('/post/new-post');
+    .post('/post/new-post', PostController.newPost);
 // .delete('/delete', AuthController.delete);
 
 module.exports = router;

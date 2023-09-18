@@ -15,26 +15,21 @@ import { AlertContext } from "../../context/alert";
 export default function Formulario() {
 
     const { setMessage, setShow, setVariant } = useContext(AlertContext);
+
     var [title, setTitle] = useState('');
     var [text, setText] = useState('');
-    var [author, setAuthor] = useState('');
-    
-    
-
 
     async function handleSubmit(e) {
+
         e.preventDefault();
-
-
+        
         try {
             const token = sessionStorage.getItem('token');
             const decodeToken = jwt_decode(token)
             const { id } = decodeToken;
-            
-            const res = await axios.post('http://localhost:8080/blog/post/new-post', {
+            const res = await axios.post('http://localhost:8080/api/article', {
                 authorid: id, title, text
             });
-
             setMessage(res.data.message);
             setShow(true);
             setVariant('success');
@@ -46,7 +41,7 @@ export default function Formulario() {
             setMessage("Erro ao inserir o artigo, reveja as informações e tente novamente");
             setShow(true);
             setVariant('danger');
-        };
+        }
     }
 
     return (
