@@ -33,20 +33,22 @@ export default function Post() {
     const RenderPosts = () => {
         return artigos.map((artigo) => {
             return (
-                <Card key={artigo.id}  >
+                <Container >
+                <Card key={artigo.id} className={styles.card} >
                     <Card.Title >
                         {artigo.title}
                     </Card.Title>
                     <Card.Body >
                         <Card.Text >{artigo.text}</Card.Text>
-                        <div className='d-flex align-items-center '>
+                        <div className='d-flex align-items-cente'>
                             {artigo.likes}<Button variant='light'><AiOutlineLike /></Button>
                         </div>
                     </Card.Body>
                 </Card>
-            )
-        })
-    }
+                </Container>
+            );
+        });
+    };
 
     return (
         <Container>
