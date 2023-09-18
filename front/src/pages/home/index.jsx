@@ -1,9 +1,11 @@
-// import Post from "../../pages/post";
+import Post from "../../pages/post";
 
-// export default function HomePage() {
-//     return (
-//         <>
-//             <Post />
-//         </>
-//     )
-// }
+export default function HomePage() {
+    return (
+        <>
+            <Post />
+        </>
+    )
+}
+
+
