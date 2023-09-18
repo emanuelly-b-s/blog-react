@@ -3,6 +3,9 @@ import { Button, Card, Form } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom';
 import styles from './styles.module.scss';
 import { AlertContext } from "../../context/alert";
+import axios from  'axios';
+import CryptoJS from 'crypto-js'
+import { Secret } from '../../secret'
 
 export default function CardLogin() {
 
@@ -11,7 +14,7 @@ export default function CardLogin() {
     const navigate = useNavigate();
 
     var [email, setEmail] = useState('');
-    var [pass, setPass] = useState('');
+    var [password, setPass] = useState('');
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -20,10 +23,13 @@ export default function CardLogin() {
             email, password
         }
         try {
-            const jsonCrypt = CryptoJS.AES.encrypt(JSON.stringify(json), SECRET).toString();
-            var res = await axios.post('http://localhost:8080/api/login', {
+            const jsonCrypt = CryptoJS.AES.encrypt(JSON.stringify(json), Secret).toString();
+            var res = await axios.post('http://localhost:8080/blog/auth/login/', {
                 jsonCrypt
-            })
+            });
+
+            console.log(res)
+
             sessionStorage.setItem('token', res.data.token);
             navigate('/home')
         } catch (error) {
@@ -64,7 +70,7 @@ export default function CardLogin() {
                         onChange={(e) => setEmail(e.target.value)}
                     />
                     <Form.Control
-                        value={pass}
+                        value={password}
                         placeholder="Insira sua senha"
                         onChange={(e) => setPass(e.target.value)}
                     />

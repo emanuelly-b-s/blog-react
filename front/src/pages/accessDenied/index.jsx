@@ -1,6 +1,7 @@
 import { Card, Col, Container, Row } from "react-bootstrap";
 import { BsSignStopFill } from 'react-icons/bs'
 import styles from './styles.module.scss';
+
 export function AccessDenied() {
     return (
         <Row className={styles.container}>

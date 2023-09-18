@@ -1,7 +1,7 @@
 import { Col, Row, Container } from 'react-bootstrap';
-import CardLogin from '../../pages/cardLogin';
+import CardLogin from '../cardLogin';
 import styles from './styles.module.scss';
-import NavBar from '../../pages/navbar';
+import NavBar from '../navbar/index.jsx';
 
 export default function LoginPage() {
 

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import jwt_decode from 'jwt-decode';
+
 export default function ProtectedRoute({ errorPage, targetPage }) {
     var [page, setPage] = useState(<></>);
     function renderPage() {

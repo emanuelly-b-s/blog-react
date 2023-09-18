@@ -4,7 +4,8 @@ const router = express.Router();
 
 router
     .post('/', AuthController.register)
-    .post('/auth/login', AuthController.login);
+    .post('/auth/login', AuthController.login)
+    .post('/post/new-post');
 // .delete('/delete', AuthController.delete);
 
 module.exports = router;
