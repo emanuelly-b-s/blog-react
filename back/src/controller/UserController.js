@@ -110,6 +110,8 @@ class AuthController {
   static async getUser(token) {
 
     try {
+      
+      console.log('teste')
     
       if (!token) 
         return res.status(401).json({ message: "Token não fornecido" });
@@ -120,9 +122,6 @@ class AuthController {
         if (err) return res.status(401).json({ message: "Token inválido" });
 
         const user = await User.findById(decoded.id);
-
-        if (!user)
-          return res.status(404).json({ message: "Usuário não encontrado" });
 
         return user._id;
       });

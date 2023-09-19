@@ -31,17 +31,18 @@ export default function Post() {
         `/http://localhost:8080/post/like/${postId}`,
         {
           method: liked ? "DELETE" : "POST",
-          body: { jsonCrypto },
+          body: CryptoJS.AES.encrypt(
+            JSON.stringify(informations).toString(),
+            "a"
+          ).toString(),
         }
       );
-      console.log(jsonCrypto);
 
       if (response.ok) {
         setLiked(!liked);
         getPosts();
       }
     } catch (error) {
-      console.log('n deu')
       console.error("Erro ao curtir a postagem:", error);
     }
   }

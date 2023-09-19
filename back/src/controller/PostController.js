@@ -74,7 +74,10 @@ class PostController {
       CryptoJS.enc.Utf8
     );
 
+
     const { postId, token } = JSON.parse(json);
+
+    console.log(postId, token);
 
     const user = await UserController.getUser(token);
     console.log(user);
