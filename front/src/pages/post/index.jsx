@@ -1,29 +1,23 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from "react";
 import {
     Button,
     Card,
     Container
-} from 'react-bootstrap'
-import { AiOutlineLike } from 'react-icons/ai'
+} from 'react-bootstrap';
+import axios from 'axios';
+import { AiOutlineLike } from 'react-icons/ai';
 import styles from './styles.module.scss';
 
 export default function Post() {
+
     var [artigos, setArtigos] = useState([]);
+
     function getPosts() {
-        setArtigos([
-            {
-                id: 1,
-                title: 'teste 1',
-                text: 'Teste',
-                likes: 10
-            },
-            {
-                id: 2,
-                title: 'teste 2',
-                text: 'Teste 2',
-                likes: 5
-            },
-        ])
+        axios.get(`http://localhost:8080/post`)
+            .then(response => {
+                const artigo = response.data;
+                setArtigos(artigo);
+            });
     };
 
     useEffect(() => {
@@ -34,17 +28,17 @@ export default function Post() {
         return artigos.map((artigo) => {
             return (
                 <Container >
-                <Card key={artigo.id} className={styles.card} >
-                    <Card.Title >
-                        {artigo.title}
-                    </Card.Title>
-                    <Card.Body >
-                        <Card.Text >{artigo.text}</Card.Text>
-                        <div className='d-flex align-items-cente'>
-                            {artigo.likes}<Button variant='light'><AiOutlineLike /></Button>
-                        </div>
-                    </Card.Body>
-                </Card>
+                    <Card key={artigo.id} className={styles.card} >
+                        <Card.Title >
+                            {artigo.title}
+                        </Card.Title>
+                        <Card.Body >
+                            <Card.Text >{artigo.text}</Card.Text>
+                            <div className='d-flex align-items-cente'>
+                                {artigo.likes}<Button variant='light'><AiOutlineLike /></Button>
+                            </div>
+                        </Card.Body>
+                    </Card>
                 </Container>
             );
         });
@@ -56,3 +50,4 @@ export default function Post() {
         </Container>
     )
 }
+
