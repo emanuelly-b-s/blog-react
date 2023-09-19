@@ -1,58 +1,85 @@
 import { useCallback, useEffect, useState } from "react";
-import {
-    Button,
-    Card,
-    Container
-} from 'react-bootstrap';
-import axios from 'axios';
-import { AiOutlineLike } from 'react-icons/ai';
-import styles from './styles.module.scss';
+import { Button, Card, Container } from "react-bootstrap";
+import axios from "axios";
+import { AiOutlineLike } from "react-icons/ai";
+import styles from "./styles.module.scss";
+import CryptoJS from "crypto-js";
 
 export default function Post() {
+  var [artigos, setArtigos] = useState([]);
+  const [liked, setLiked] = useState(false);
 
-    var [artigos, setArtigos] = useState([]);
+  async function getPosts() {
+    await axios.get(`http://localhost:8080/post`).then((response) => {
+      const artigo = response.data;
+      setArtigos(artigo);
+    });
+  }
 
-    async function getPosts() {
-        await axios.get(`http://localhost:8080/post`)
-            .then(response => {
-                const artigo = response.data;
-                setArtigos(artigo);
-            });
-    };
+  async function handleLikeClick(postId) {
+    const token = sessionStorage.getItem("token");
 
-    async function handleClick(id) {
-        await axios.post(`http://localhost:8080/post/like/${id}`);
+    const informations = { postId, token };
+
+    const jsonCrypto = CryptoJS.AES.encrypt(
+      JSON.stringify(informations).toString(),
+      "a"
+    ).toString();
+
+    try {
+      const response = await fetch(
+        `/http://localhost:8080/post/like/${postId}`,
+        {
+          method: liked ? "DELETE" : "POST",
+          body: { jsonCrypto },
+        }
+      );
+      console.log(jsonCrypto);
+
+      if (response.ok) {
+        setLiked(!liked);
         getPosts();
+      }
+    } catch (error) {
+      console.log('n deu')
+      console.error("Erro ao curtir a postagem:", error);
     }
+  }
 
-    useEffect(() => {
-        getPosts();
-    }, []);
+  async function handleClick(id) {
+    await axios.post(`http://localhost:8080/post/like/${id}`);
+    getPosts();
+  }
 
-    const RenderPosts = () => {
-        return artigos.map((artigo) => {
-            return (
-                <Container >
-                    <Card key={artigo.id} className={styles.card} >
-                        <Card.Title >
-                            {artigo.title}
-                        </Card.Title>
-                        <Card.Body >
-                            <Card.Text >{artigo.text}</Card.Text>
-                            <div className='d-flex align-items-cente'>
-                                {artigo.likes}<Button variant='light' onClick={() => handleClick(artigo._id)}><AiOutlineLike /></Button>
-                            </div>
-                        </Card.Body>
-                    </Card>
-                </Container>
-            );
-        });
-    };
+  useEffect(() => {
+    getPosts();
+  }, []);
 
-    return (
+  const RenderPosts = () => {
+    return artigos.map((artigo) => {
+      return (
         <Container>
-            <RenderPosts />
+          <Card key={artigo.id} className={styles.card}>
+            <Card.Title>{artigo.title}</Card.Title>
+            <Card.Body>
+              <Card.Text>{artigo.text}</Card.Text>
+              <div className="d-flex align-items-cente">
+                {artigo.likes}
+                <Button onClick={() => handleLikeClick(artigo._id)}>
+                  {liked ? "Descurtir" : "Curtir"}
+                  <AiOutlineLike />
+                </Button>
+              </div>
+            </Card.Body>
+          </Card>
         </Container>
-    )
-}
+      );
+    });
+  };
 
+  return (
+    <Container>
+      <RenderPosts />
+    </Container>
+  );
+}

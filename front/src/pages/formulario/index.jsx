@@ -26,7 +26,7 @@ export default function Formulario() {
 
             const token = sessionStorage.getItem('token');
     
-            const post = { title, text, token}
+            const post = { title, text, token }
 
             const jsonCrypto = CryptoJS.AES.encrypt(JSON.stringify(post).toString(), 'a').toString();
 
