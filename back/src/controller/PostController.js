@@ -27,22 +27,24 @@ class PostController {
 
     static async register(req, res) {
 
-        const { title, text, authorid } = req.body;
+        const { jsonCrypto } = req.body;
 
-        if (!title || !text || !authorid)
-            return res.status(400).send({ message: "os campos não podem estarem vazios " });
+        const json = CryptoJS.AES.decrypt(jsonCrypto, 'a').toString(CryptoJS.enc.Utf8);
 
-        if (title.length < 3)
-            return res.status(400).send({ message: "o titulo não pode ser menor que 3 caracteres" });
+        const { token, title, text } = JSON.parse(json);
 
-        if (text.length < 15)
-            return res.status(400).send({ message: "o artigo não pode ser menor que 15 caracteres" });
+        if (!title || !text)
+            return res.status(400).send({ message: "post data not found" });
 
-        if (authorid.length < 3)
-            return res.status(400).send({ message: "O autor não pode ser menor que 3 caracteres" });
+        const verified = jwt.verify(token, 'a').id;
+
+        if (!verified)
+            return res.status(401).send({ message: "error: Invalid-token" });
+
 
         try {
-            const author = await AuthorController.getAuthor(authorid);
+            const author = await AuthorController.getAuthor(verified);
+
             const post = {
                 title,
                 text,
@@ -53,29 +55,38 @@ class PostController {
                 removedAt: null,
             }
 
+            console.log(post)
             await Post.create(post);
             return res.status(201).send({ message: "Artigo criado com sucesso" });
 
         } catch (error) {
-
+            console.log(error)
             return res.status(500).send({ error: "Falha ao salvar o artigo", data: error.message });
         }
     };
 
     static async likePost(req, res) {
 
-        const { id } = req.params;
+        const { jsonCrypto } = req.body;
+        const json = CryptoJS.AES.decrypt(jsonCrypto, 'a').toString(CryptoJS.enc.Utf8);
+        const { postId, token } = JSON.parse(json);
 
-        if (!id) return res.status(400).send({ message: "No id provider" });
+        const verified = jwt.verify(token, 'a').id;
 
-        const post = await Post.findById(id);
-
-        if(post.likes) return res.status(400).send({ message: "ja ta curtido" });
-
+        if (!postId) return res.status(400).send({ message: "No id provider" });
 
         try {
-            await Post.findByIdAndUpdate({ _id: id }, { likes: ++post.likes })
-            return res.status(200).send();
+
+            const post = await Post.findById(postId);
+            const index = post.likes.indexOf(verified);
+
+            index !== -1 ?
+                post.likes.splice(index, 1) : post.likes.push(verified);
+
+            post.save();
+
+            return res.status(200).send({ data: post });
+
         } catch (error) {
             console.log(error)
             return res.status(500).send({ error: "Falha ao curtir", data: error.message })

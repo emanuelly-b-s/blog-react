@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import CryptoJS from "crypto-js";
 import axios from "axios";
 import jwt_decode from 'jwt-decode';
 import {
@@ -18,17 +19,19 @@ export default function Formulario() {
     var [text, setText] = useState('');
 
     async function handleSubmit(e) {
+
         e.preventDefault();
+
         try {
+
             const token = sessionStorage.getItem('token');
+    
+            const post = { title, text, token}
 
-            const decodeToken = jwt_decode(token);
+            const jsonCrypto = CryptoJS.AES.encrypt(JSON.stringify(post).toString(), 'a').toString();
 
-            const { id } = decodeToken;
+            const res = await axios.post('http://localhost:8080/post', { jsonCrypto });
 
-            const res = await axios.post('http://localhost:8080/post', {
-                authorid: id, title, text
-            });
 
             setMessage(res.data.message);
             setShow(true);
