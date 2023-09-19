@@ -1,9 +1,13 @@
-const bodyParser = require('body-parser')
-const auth = require('./auth')
+const bodyParser = require('body-parser');
+const post = require('./post');
+const user = require('./user');
+const author = require('./author');
 
 module.exports = (app) => {
-    app.use (
+    app.use(
         bodyParser.json(),
-        auth
+        post,
+        author,
+        user
     )
 }

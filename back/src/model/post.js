@@ -1,9 +1,39 @@
 const mongoose = require('mongoose');
+const { authorSchema } = require('./author');
 
-const post = mongoose.model('post', {
-    title: String,
-    text: String,
-    likes: Number
-});
+const Post = mongoose.model('Post',
+    new mongoose.Schema({
+        title: {
+            type: String,
+            required: true,
+            minlength: 3
+        },
+        text: {
+            type: String,
+            required: true,
+            minlength: 15
+        },
+        author: {
+            type: authorSchema,
+            required: true
+        },
+        likes: {
+            type: Number,
+            required: true
+        },
+        createdAt: {
+            type: Date,
+            required: true
+        },
+        updatedAt: {
+            type: Date,
+            required: false
+        },
+        removedAt: {
+            type: Date,
+            required: false
+        }
+    })
+);
 
-module.exports = post;
+module.exports = Post;

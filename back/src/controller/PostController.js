@@ -8,15 +8,9 @@ var CryptoJS = require('crypto-js')
 const UserController = require('./UserController');
 const fs = require('fs');
 const path = require('path');
+
 class PostController {
-    static createLog(error) {
-        const timestamp = Date.now();
-        const archivePath = path.resolve(__dirname, '..', `logs-${timestamp}.txt`);
-        const errorString = JSON.stringify(error.message)
-        fs.writeFile(archivePath, errorString, function (err, result) {
-            if (err) console.log(err)
-        })
-    }
+
     static async getAll(req, res) {
         let page = req.params.page;
         let limit = 5;
@@ -26,11 +20,12 @@ class PostController {
             return res.status(200).send(Posts);
         } catch (error) {
             PostController.createLog(error);
-            return res.status(500).send({ message: "Falha ao carregar os Artigos" })
+            return res.status(500).send({ message: "Falha ao carregar os Artigos" });
         }
     };
 
     static async create(req, res) {
+
         const { title, text, authorid } = req.body;
 
         if (!title || !text || !authorid)
@@ -56,7 +51,7 @@ class PostController {
                 updatedAt: Date.now(),
                 removedAt: null,
             }
-            await Post.create(Post)
+            await Post.create(Post);
             return res.status(201).send({ message: "Artigo criado com sucesso" });
         } catch (error) {
             PostController.createLog(error);
@@ -77,4 +72,5 @@ class PostController {
         }
     }
 }
+
 module.exports = PostController;
