@@ -12,13 +12,18 @@ export default function Post() {
 
     var [artigos, setArtigos] = useState([]);
 
-    function getPosts() {
-        axios.get(`http://localhost:8080/post`)
+    async function getPosts() {
+        await axios.get(`http://localhost:8080/post`)
             .then(response => {
                 const artigo = response.data;
                 setArtigos(artigo);
             });
     };
+
+    async function handleClick(id) {
+        await axios.post(`http://localhost:8080/post/like/${id}`);
+        getPosts();
+    }
 
     useEffect(() => {
         getPosts();
@@ -35,7 +40,7 @@ export default function Post() {
                         <Card.Body >
                             <Card.Text >{artigo.text}</Card.Text>
                             <div className='d-flex align-items-cente'>
-                                {artigo.likes}<Button variant='light'><AiOutlineLike /></Button>
+                                {artigo.likes}<Button variant='light' onClick={() => handleClick(artigo._id)}><AiOutlineLike /></Button>
                             </div>
                         </Card.Body>
                     </Card>

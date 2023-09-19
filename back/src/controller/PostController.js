@@ -13,15 +13,15 @@ const AuthorController = require('./AuthorController');
 class PostController {
 
     static async getAll(req, res) {
+
         let page = req.params.page;
         let limit = 5;
         let skip = limit * (page - 1);
         try {
-            const Posts = await Post.find().skip(skip).limit(limit);
-            return res.status(200).send(Posts);
+            const posts = await Post.find().skip(skip).limit(limit);
+            return res.status(200).send(posts);
         } catch (error) {
-            // PostController.createLog(error);
-            return res.status(500).send({ message: "Falha ao carregar os Artigos" });
+            return res.status(500).send({ message: "Falha ao carregar os Artigos" })
         }
     };
 
@@ -54,22 +54,25 @@ class PostController {
             }
             await Post.create(post);
             return res.status(201).send({ message: "Artigo criado com sucesso" });
-            
+
         } catch (error) {
-           
+
             return res.status(500).send({ error: "Falha ao salvar o artigo", data: error.message });
         }
     };
 
     static async likePost(req, res) {
+
         const { id } = req.params;
-        if (!id) return res.status(400).send({ message: "No id provider" })
+
+        if (!id) return res.status(400).send({ message: "No id provider" });
+
         try {
-            const Post = await Post.findById(id);
-            await Post.findByIdAndUpdate({ _id: id }, { likes: ++Post.likes })
+            const post = await Post.findById(id);
+            await Post.findByIdAndUpdate({ _id: id }, { likes: ++post   .likes })
             return res.status(200).send();
         } catch (error) {
-
+            console.log(error)
             return res.status(500).send({ error: "Falha ao curtir", data: error.message })
         }
     }
