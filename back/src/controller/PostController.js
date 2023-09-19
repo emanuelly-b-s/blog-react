@@ -52,6 +52,7 @@ class PostController {
                 updatedAt: Date.now(),
                 removedAt: null,
             }
+
             await Post.create(post);
             return res.status(201).send({ message: "Artigo criado com sucesso" });
 
@@ -67,9 +68,13 @@ class PostController {
 
         if (!id) return res.status(400).send({ message: "No id provider" });
 
+        const post = await Post.findById(id);
+
+        if(post.likes) return res.status(400).send({ message: "ja ta curtido" });
+
+
         try {
-            const post = await Post.findById(id);
-            await Post.findByIdAndUpdate({ _id: id }, { likes: ++post   .likes })
+            await Post.findByIdAndUpdate({ _id: id }, { likes: ++post.likes })
             return res.status(200).send();
         } catch (error) {
             console.log(error)
