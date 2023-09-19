@@ -23,15 +23,15 @@ export default function CardLogin() {
             email, password
         }
         try {
-            const jsonCrypt = CryptoJS.AES.encrypt(JSON.stringify(json), Secret).toString();
-            var res = await axios.post('http://localhost:8080/blog/auth/login/', {
+            const jsonCrypt = CryptoJS.AES.encrypt(JSON.stringify(json), 'a').toString();
+            var res = await axios.post('http://localhost:8080/user/login/', {
                 jsonCrypt
             });
 
             console.log(res)
 
             sessionStorage.setItem('token', res.data.token);
-            navigate('/home')
+            navigate('/home');
         } catch (error) {
             setMessage('Erro ao se conectar');
             setShow(true);

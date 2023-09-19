@@ -1,7 +1,12 @@
 const express = require('express');
-const blog = require('../routes/blog')
+const user = require('../routes/user')
+const post = require('../routes/post')
+const author = require('../routes/author')
+
 
 module.exports = function (app) {
     app.use(express.json())
-    .use('/blog', blog);
+    .use('/user', user)
+    .use('/author', author)
+    .use('/post', post);
 }

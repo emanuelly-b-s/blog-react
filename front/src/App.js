@@ -6,8 +6,8 @@ import RegisterPage from './pages/register';
 import NavBar from './pages/navbar';
 import { AlertProvider } from './context/alert';
 import HomePage from './pages/home';
-import ProtectedRoute from './pages/ProtectedRoute';
-import { AccessDenied } from './pages/AccessDenied';
+import ProtectedRoute from './pages/protectedRoute';
+import { AccessDenied } from './pages/accessDenied';
 
 function App() {
   return (

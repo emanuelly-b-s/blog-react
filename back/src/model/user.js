@@ -5,7 +5,7 @@ const User = mongoose.model('User',
     new mongoose.Schema({
         author: {
             type: authorSchema,
-            required: true
+            // required: true
         },
         login: {
             type: String,

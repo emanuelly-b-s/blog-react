@@ -1,4 +1,5 @@
 const User = require('../model/user');
+const { Author } = require('../model/author');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 var CryptoJS = require("crypto-js");
@@ -6,15 +7,12 @@ var CryptoJS = require("crypto-js");
 require('dotenv').config();
 
 class AuthController {
+
     static async register(req, res) {
 
-        var bytes = CryptoJS.AES.decrypt(req.body.jsonCrypt, process.env.SECRET);
-
-        const decryptd = bytes.toString(CryptoJS.enc.Utf8);
-
-        const json = JSON.parse(decryptd);
-
-        const { name, birth, email, password, confirmPassword } = json;
+        const { jsonCrypt } = req.body;
+        const json = CryptoJS.AES.decrypt(jsonCrypt, 'a').toString(CryptoJS.enc.Utf8);
+        const { name, email, password, confirmPassword, birth } = JSON.parse(json);
 
         if (!name)
             return res.status(400).json({ message: "O nome é obrigatório" });
@@ -33,7 +31,7 @@ class AuthController {
         if (userExist)
             return res.status(422).json({ message: "insira outro e-mail" });
 
-        const passwordCrypt = CryptoJS.AES.encrypt(password, process.env.SECRET).toString();
+        const passwordCrypt = CryptoJS.AES.encrypt(password, 'a').toString();
 
         const author = new Author({
             name,
@@ -64,11 +62,11 @@ class AuthController {
 
     static async login(req, res) {
 
-        var bytes = CryptoJS.AES.decrypt(req.body.jsonCrypt, process.env.SECRET);
-        const decryptd = bytes.toString(CryptoJS.enc.Utf8);
-        const json = JSON.parse(decryptd);
+        const { jsonCrypt } = req.body
 
-        const { email, password } = json;
+        const json = CryptoJS.AES.decrypt(jsonCrypt, 'a').toString(CryptoJS.enc.Utf8);
+
+        const { email, password } = JSON.parse(json);
 
         if (!email)
             return res.status(422).json({ message: "O e-mail é obrigatório" });
@@ -78,14 +76,18 @@ class AuthController {
 
         const user = await User.findOne({ email: email });
 
+
         if (!user)
             return res.status(422).json({ message: "Usuário e/ou senha inválido" });
 
-        if (!await bcrypt.compare(password, user.password))
+
+        const senha = CryptoJS.AES.decrypt(user.password, 'a').toString(CryptoJS.enc.Utf8);
+
+        if (senha != password)
             return res.status(422).send({ message: "Usuário e/ou senha inválido" });
 
         try {
-            const secret = process.env.SECRET
+            const secret = 'a'
             const token = jwt.sign(
                 {
                     id: user._id,

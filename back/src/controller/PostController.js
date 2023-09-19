@@ -8,6 +8,7 @@ var CryptoJS = require('crypto-js')
 const UserController = require('./UserController');
 const fs = require('fs');
 const path = require('path');
+const AuthorController = require('./AuthorController');
 
 class PostController {
 
@@ -19,12 +20,12 @@ class PostController {
             const Posts = await Post.find().skip(skip).limit(limit);
             return res.status(200).send(Posts);
         } catch (error) {
-            PostController.createLog(error);
+            // PostController.createLog(error);
             return res.status(500).send({ message: "Falha ao carregar os Artigos" });
         }
     };
 
-    static async create(req, res) {
+    static async register(req, res) {
 
         const { title, text, authorid } = req.body;
 
@@ -41,8 +42,8 @@ class PostController {
             return res.status(400).send({ message: "O autor não pode ser menor que 3 caracteres" });
 
         try {
-            const author = await UserController.getAuthor(authorid);
-            const Post = {
+            const author = await AuthorController.getAuthor(authorid);
+            const post = {
                 title,
                 text,
                 likes: 0,
@@ -51,10 +52,11 @@ class PostController {
                 updatedAt: Date.now(),
                 removedAt: null,
             }
-            await Post.create(Post);
+            await Post.create(post);
             return res.status(201).send({ message: "Artigo criado com sucesso" });
+            
         } catch (error) {
-            PostController.createLog(error);
+           
             return res.status(500).send({ error: "Falha ao salvar o artigo", data: error.message });
         }
     };
@@ -67,7 +69,7 @@ class PostController {
             await Post.findByIdAndUpdate({ _id: id }, { likes: ++Post.likes })
             return res.status(200).send();
         } catch (error) {
-            PostController.createLog(error);
+
             return res.status(500).send({ error: "Falha ao curtir", data: error.message })
         }
     }

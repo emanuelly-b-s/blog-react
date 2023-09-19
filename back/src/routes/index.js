@@ -9,5 +9,5 @@ module.exports = (app) => {
         post,
         author,
         user
-    )
+    );
 }

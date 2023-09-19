@@ -8,28 +8,28 @@ import {
     Form,
     Row
 } from "react-bootstrap";
-import styles from './styles.module.scss';
 import { AlertContext } from "../../context/alert";
-
+import styles from './styles.module.scss';
 
 export default function Formulario() {
 
     const { setMessage, setShow, setVariant } = useContext(AlertContext);
-
     var [title, setTitle] = useState('');
     var [text, setText] = useState('');
 
     async function handleSubmit(e) {
-
         e.preventDefault();
-        
         try {
             const token = sessionStorage.getItem('token');
-            const decodeToken = jwt_decode(token)
+
+            const decodeToken = jwt_decode(token);
+
             const { id } = decodeToken;
-            const res = await axios.post('http://localhost:8080/api/article', {
+
+            const res = await axios.post('http://localhost:8080/post', {
                 authorid: id, title, text
             });
+
             setMessage(res.data.message);
             setShow(true);
             setVariant('success');
@@ -42,21 +42,14 @@ export default function Formulario() {
             setShow(true);
             setVariant('danger');
         }
-    }
+    };
 
     return (
         <Container>
             <Row>
                 <Col>
-                    {/* className={styles.form} */}
-                    <Form onSubmit={handleSubmit}>
-                        {/* className={styles.form__title} */}
-                        <Form.Text >Digite Aqui seu Artigo</Form.Text>
-                        <Form.Control
-                            placeholder="Autor"
-                            value={author}
-                            onChange={(e) => setAuthor(e.target.value)}
-                        />
+                    <Form onSubmit={handleSubmit} className={styles.form}>
+                        <Form.Text className={styles.form__title}>Digite Aqui seu Artigo</Form.Text>
                         <Form.Control
                             placeholder="Titulo"
                             value={title}
@@ -69,10 +62,8 @@ export default function Formulario() {
                             value={text}
                             onChange={(e) => setText(e.target.value)}
                         />
-                        {/* className={styles.form__div} */}
-                        <Col xs={12} sm={9} md={6} >
-                            {/* className={styles.form__div__button} */}
-                            <Button type="submit"  >Salvar</Button>
+                        <Col xs={12} sm={9} md={6} className={styles.form__div}>
+                            <Button type="submit" className={styles.form__div__button} >Salvar</Button>
                         </Col>
                     </Form>
                 </Col>
@@ -80,3 +71,4 @@ export default function Formulario() {
         </Container>
     )
 }
+

@@ -11,12 +11,13 @@ import CryptoJS from 'crypto-js'
 import { AlertContext } from "../../context/alert";
 
 export default function CardRegister() {
+
     const { setMessage, setShow, setVariant } = useContext(AlertContext);
     var [name, setName] = useState('');
     var [email, setEmail] = useState('');
     var [birth, setBirth] = useState(Date())
     var [password, setPassword] = useState('');
-    var [confirmPass, setConfirmPass] = useState('');
+    var [confirmPassword, setconfirmPassword] = useState('');
 
     async function handleSubmit(e) {
 
@@ -24,13 +25,13 @@ export default function CardRegister() {
 
         if (!formValid()) return
         const json = {
-            name, email, birth, password, confirmPass
+            name, email, birth, password, confirmPassword
         }
-        const jsonCrypt = CryptoJS.AES.encrypt(JSON.stringify(json), 'A').toString();
+        const jsonCrypt = CryptoJS.AES.encrypt(JSON.stringify(json), 'a').toString();
         console.log('aaaa');
 
         try {
-            var res = await axios.post('http://localhost:8080/blog', {
+            var res = await axios.post('http://localhost:8080/user/register', {
                 jsonCrypt
             })
             setMessage(res.data.message);
@@ -39,7 +40,7 @@ export default function CardRegister() {
             setName('');
             setEmail('');
             setPassword('');
-            setConfirmPass('');
+            setconfirmPassword('');
             console.log(res);
         } catch (error) {
             console.log(error);
@@ -71,7 +72,7 @@ export default function CardRegister() {
             setVariant('danger')
             return false;
         }
-        if (confirmPass !== password) {
+        if (confirmPassword !== password) {
             setMessage('As senhas não conferem')
             setShow(true);
             setVariant('danger')
@@ -123,8 +124,8 @@ export default function CardRegister() {
                     <Form.Label>Confirme sua senha</Form.Label>
                     <Form.Control
                         type="password"
-                        value={confirmPass}
-                        onChange={(e) => setConfirmPass(e.target.value)}
+                        value={confirmPassword}
+                        onChange={(e) => setconfirmPassword(e.target.value)}
                     />
                     <Button
                         // className={styles.card__form__button}
