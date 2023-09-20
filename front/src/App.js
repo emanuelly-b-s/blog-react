@@ -8,10 +8,13 @@ import { AlertProvider } from './context/alert';
 import HomePage from './pages/home';
 import ProtectedRoute from './pages/protectedRoute';
 import { AccessDenied } from './pages/accessDenied';
+import { LanguageProvider } from './context/language';
+
 
 function App() {
   return (
     <>
+    <LanguageProvider>
       <AlertProvider>
         <Routes>
           <Route path='/' element={<LoginPage />} />
@@ -29,6 +32,7 @@ function App() {
           </Route>
         </Routes>
       </AlertProvider>
+      </LanguageProvider>
     </>
   );
 }
