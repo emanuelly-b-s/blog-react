@@ -8,16 +8,16 @@ export const LanguageProvider = ({ children }) => {
 
   const portuguese = {
     abbreviation: "PT",
-    home: "Casa",
+    home: "Inicio",
     add: "Adicionar",
     comments: "comentários",
     title: "Título",
     text: "Texto",
     post: "Postar",
-    articleInput: "Digite Aqui seu Artigo",
+    articleInput: "Escreva o que esta pensando",
     articleError:
-      "Erro ao inserir o artigo, reveja as informações e tente novamente",
-    boschBrazil: "Bosch no Brasil",
+      "Erro ao postar, verifique se o título e o texto estão preenchidos",
+    logout: "Sair",
   };
 
   const english = {
@@ -28,10 +28,10 @@ export const LanguageProvider = ({ children }) => {
     title: "Title",
     text: "Text",
     post: "Post",
-    articleInput: "Write your article here",
-    articleError: "Error inserting the article",
-    boschBrazil: "Bosch in Brazil",
-  };
+    articleInput: "Write what you are thinking",
+    articleError: "Error inserting post, check if title and text are filled     ",
+    logout: "Logout",
+};
 
   const [text, setText] = useState(english);
 

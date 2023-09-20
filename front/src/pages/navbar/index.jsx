@@ -26,12 +26,14 @@ export default function NavBar() {
             <Link to="/add" className={styles.links__link}>
               {text.add}
             </Link>
-          </div>
-          <div className={styles.buttons}>
-            <button onClick={() => setLanguage()}>{text.abbreviation}</button>
-            <Link to="/">
-              <button className={styles.door} onClick={() => logOut()}></button>
-            </Link>
+            <div className={styles.buttons}>
+              <Link className={styles.links__link} to="/">
+                <button onClick={() => logOut()}>{text.logout}</button>
+              </Link>
+            </div>
+            <div className={styles.buttons}>
+              <button onClick={() => setLanguage()}>{text.abbreviation}</button>
+            </div>
           </div>
         </div>
       </section>
