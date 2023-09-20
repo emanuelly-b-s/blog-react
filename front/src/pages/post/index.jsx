@@ -36,15 +36,18 @@ export default function Post() {
         setLiked(!liked);
         getPosts();
       }
+
+    
+
     } catch (error) {
       console.error("Erro ao curtir a postagem:", error);
     }
+
+    getPosts();
+
   }
 
-  // async function handleClick(id) {
-  //   await axios.post(`http://localhost:8080/post/like/${id}`);
-  //   getPosts();
-  // }
+
 
   useEffect(() => {
     getPosts();
@@ -59,7 +62,7 @@ export default function Post() {
             <Card.Body>
               <Card.Text>{artigo.text}</Card.Text>
               <div className="d-flex align-items-cente">
-                {artigo.likes}
+                {artigo.likes.length}
                 <Button onClick={() => handleLikeClick(artigo._id)}>
                   {liked ? "Descurtir" : "Curtir"}
                   <AiOutlineLike />
