@@ -98,8 +98,16 @@ class PostController {
       }
 
       if (post.likes.includes(verified)) {
-        return res.redirect(`http://localhost:8080/post/deslike/${postId}`, {verified});
+        const temp = post.likes;
+        temp.pull(verified);
+        post.likes = temp;
+        await post.save();
+        console.log(post.likes)
+        return res.redirect(302, `http://localhost:8080/post/deslike/${postId}`);
       }
+
+      console.log(post.likes)
+
 
       const temp = post.likes;
       temp.push(verified);
