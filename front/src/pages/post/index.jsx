@@ -27,16 +27,27 @@ export default function Post() {
     ).toString();
 
     try {
-      const response = await fetch(
-        `/http://localhost:8080/post/like/${postId}`,
-        {
-          method: liked ? "DELETE" : "POST",
-          body: CryptoJS.AES.encrypt(
-            JSON.stringify(informations).toString(),
-            "a"
-          ).toString(),
-        }
-      );
+      if (liked)
+        var response = await axios.post(
+          `http://localhost:8080/post/like/${postId}`,
+          { jsonCrypto }
+        );
+      else
+        var response = await axios.delete(
+          `http://localhost:8080/post/like/${postId}`,
+          { jsonCrypto }
+        );
+
+      // const response = await fetch(
+      //   `/http://localhost:8080/post/like/${postId}`,
+      //   {
+      //     method: liked ? "DELETE" : "POST",
+      //     body: CryptoJS.AES.encrypt(
+      //       JSON.stringify(informations).toString(),
+      //       "a"
+      //     ).toString(),
+      //   }
+      // );
 
       if (response.ok) {
         setLiked(!liked);
