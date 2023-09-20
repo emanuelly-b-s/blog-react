@@ -18,7 +18,7 @@ const Post = mongoose.model('Post',
             required: true
         },
         likes: {
-            type: Number,
+            type: Array,
             required: true,
         },
         createdAt: {

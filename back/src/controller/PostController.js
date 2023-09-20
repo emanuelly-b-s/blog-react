@@ -1,7 +1,7 @@
 const Post = require("../model/post");
 const User = require("../model/user");
 const jwt = require("jsonwebtoken");
-const Interaction = require("../model/postInteractions");
+
 
 require("dotenv").config();
 
@@ -32,6 +32,8 @@ class PostController {
       CryptoJS.enc.Utf8
     );
 
+    console.log(jsonCrypto)
+
     const { token, title, text } = JSON.parse(json);
 
     if (!title || !text)
@@ -48,7 +50,7 @@ class PostController {
       const post = {
         title,
         text,
-        likes: 0,
+        likes: [],
         author,
         createdAt: Date.now(),
         updatedAt: Date.now(),
@@ -74,76 +76,43 @@ class PostController {
       CryptoJS.enc.Utf8
     );
 
+    const { token } = JSON.parse(json);
 
-    const { postId, token } = JSON.parse(json);
+    var postId = req.params;
 
-    console.log(postId, token);
+    const verified = jwt.verify(token, "a").id;
 
-    const user = await UserController.getUser(token);
-    console.log(user);
-
-    if (!user) return res.status(401).send({ message: "error: Invalid-token" });
-
-    if (!postId) return res.status(400).send({ message: "No id provider" });
-
-    try {
-      const existingLike = await Interaction.findOne({
-        postId,
-        userId,
-        type: "like",
-      });
-
-      if (existingLike)
-        return res.status(400).json({ error: "Você já curtiu esta postagem." });
-
-      const newLike = new Like({ postId, userId });
-      await newLike.save();
-      await Post.findByIdAndUpdate(postId, { $inc: { likes: 1 } });
-
-      return res.status(200).json({ message: "Postagem curtida com sucesso." });
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({ error: "Erro interno do servidor." });
-    }
-  }
-
-  static async dislikePost(req, res) {
-    const { jsonCrypto } = req.body;
-
-    const json = CryptoJS.AES.decrypt(jsonCrypto, "a").toString(
-      CryptoJS.enc.Utf8
-    );
-
-    const { postId, token } = JSON.parse(json);
-
-    const user = await UserController.getUser(token);
-    console.log(user);
-
-    if (!user) return res.status(401).send({ message: "error: Invalid-token" });
+    if (!verified)
+      return res.status(401).send({ message: "error: Invalid-token" });
 
     if (!postId) return res.status(400).send({ message: "No id provider" });
 
+    console.log(postId)
+
     try {
-      const existingLike = await Interaction.findOne({
-        postId,
-        user: user._id,
-        type: "like",
-      });
 
-      if (!existingLike)
-        return res
-          .status(400)
-          .json({ error: "Você ainda não curtiu esta postagem." });
+      const post = await Post.findById(postId.id);
 
-      await existingLike.remove();
+      if (!post) {
+        return res.status(404).send({ message: "Post not found" });
+      }
 
-      await Post.findByIdAndUpdate(postId, { $inc: { likes: -1 } });
+      if (post.likes.includes(verified)) {
+        return res.redirect(`http://localhost:8080/post/deslike/${postId}`, {verified});
+      }
 
-      return res.status(200).json({ message: "Curtida removida com sucesso." });
+      const temp = post.likes;
+      temp.push(verified);
+      post.likes = temp;
+      await post.save();
+
+      res.status(200).send({ message: "Post liked successfully" });
+
     } catch (error) {
       console.error(error);
-      return res.status(500).json({ error: "Erro interno do servidor." });
+      res.status(500).send({ message: "Internal server error" });
     }
+
   }
 }
 

@@ -17,37 +17,20 @@ export default function Post() {
   }
 
   async function handleLikeClick(postId) {
-    const token = sessionStorage.getItem("token");
 
-    const informations = { postId, token };
+    const token = sessionStorage.getItem('token');
 
-    const jsonCrypto = CryptoJS.AES.encrypt(
-      JSON.stringify(informations).toString(),
-      "a"
-    ).toString();
+    const informations = { token };
+
+    const jsonCrypto = CryptoJS.AES.encrypt(JSON.stringify(informations).toString(), 'a').toString();
+   
 
     try {
-      if (liked)
-        var response = await axios.post(
-          `http://localhost:8080/post/like/${postId}`,
-          { jsonCrypto }
-        );
-      else
-        var response = await axios.delete(
-          `http://localhost:8080/post/like/${postId}`,
-          { jsonCrypto }
-        );
+      var response = await axios.post(
+        `http://localhost:8080/post/like/${postId}`,
+        { jsonCrypto }
+      );
 
-      // const response = await fetch(
-      //   `/http://localhost:8080/post/like/${postId}`,
-      //   {
-      //     method: liked ? "DELETE" : "POST",
-      //     body: CryptoJS.AES.encrypt(
-      //       JSON.stringify(informations).toString(),
-      //       "a"
-      //     ).toString(),
-      //   }
-      // );
 
       if (response.ok) {
         setLiked(!liked);
@@ -58,10 +41,10 @@ export default function Post() {
     }
   }
 
-  async function handleClick(id) {
-    await axios.post(`http://localhost:8080/post/like/${id}`);
-    getPosts();
-  }
+  // async function handleClick(id) {
+  //   await axios.post(`http://localhost:8080/post/like/${id}`);
+  //   getPosts();
+  // }
 
   useEffect(() => {
     getPosts();

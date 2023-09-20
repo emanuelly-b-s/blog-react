@@ -3,9 +3,13 @@ import { Button, Card, Form } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom';
 import styles from './styles.module.scss';
 import { AlertContext } from "../../context/alert";
-import axios from  'axios';
+import axios from 'axios';
 import CryptoJS from 'crypto-js'
-import { Secret } from '../../secret'
+import { Secret } from '../../secret';
+import { Link } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
+
+
 
 export default function CardLogin() {
 
@@ -37,6 +41,8 @@ export default function CardLogin() {
             setShow(true);
             setVariant('danger');
         }
+
+        
     }
 
     function formValid() {
@@ -81,6 +87,9 @@ export default function CardLogin() {
                         Entrar
                     </Button>
                 </Form>
+                Nao possui uma conta?
+                <Link to='/register' className={styles.links_link}>Registre-se</Link>
+
             </Card.Body>
         </Card>
     )

@@ -10,6 +10,7 @@ import styles from './styles.module.scss';
 import CryptoJS from 'crypto-js'
 import { AlertContext } from "../../context/alert";
 
+
 export default function CardRegister() {
 
     const { setMessage, setShow, setVariant } = useContext(AlertContext);
@@ -45,6 +46,7 @@ export default function CardRegister() {
         } catch (error) {
             console.log(error);
         }
+
     }
 
     function formValid() {
