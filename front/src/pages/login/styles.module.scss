@@ -1,6 +1,16 @@
-.container{
 
-}
 .container__row{
-    background-color: red;
+    display:flex;
+    justify-content: center;
+}
+
+.card-body {
+    flex: 1 1 auto;
+    padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x);
+    color: var(--bs-card-color);
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
 }
