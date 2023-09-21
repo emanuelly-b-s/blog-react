@@ -10,7 +10,7 @@
 
 .container::before {
   width: 100%;
-  height: 0.93rem;
+  height: 0.6rem;
   position: absolute;
   left: 0;
   top: 0;
@@ -28,6 +28,7 @@
   content: "";
   position: absolute;
   bottom: 0;
+  
 }
 
 .upside {
@@ -105,13 +106,6 @@
   }
 }
 
-.door {
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  height: 30px;
-  //   background-image: url("../../../public/exit.svg");
-}
 
 @media (max-width: 1130px) {
   .headerbox {

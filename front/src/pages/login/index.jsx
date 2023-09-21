@@ -8,13 +8,11 @@ export default function LoginPage() {
     return (
         <Col>
             <Row><NavBar /></Row>
-            <Col className={styles.container}>
-                <Row className={styles.container__row}>
-                    <Col xs={12} sm={8} md={4}>
-                        <CardLogin />
-                    </Col>
-                </Row>
-            </Col>
+            <div className={styles.container__row}>
+                <Col xs={12} sm={8} md={4}>
+                    <CardLogin />
+                </Col>
+            </div>
         </Col>
 
     )

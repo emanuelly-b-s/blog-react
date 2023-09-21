@@ -61,27 +61,27 @@ export default function CardLogin() {
         return true
     }
     return (
-        <Card className={styles.card}>
-            <Card.Header >
-                <Card.Title>Login</Card.Title>
-            </Card.Header>
+        <div className={styles.card}>
+                <Card.Title className={styles.card__header}>Login</Card.Title>
             <Card.Body>
                 <Form
-                    // className={styles.card__form}
+                    className={styles.card__form}
                     onSubmit={handleSubmit}
                 >
                     <Form.Control
-                        value={email}
+                        value={email} 
+                        className={styles.form__control}
                         placeholder="Insira seu e-mail"
                         onChange={(e) => setEmail(e.target.value)}
                     />
                     <Form.Control
                         value={password}
+                        className={styles.form__control}
                         placeholder="Insira sua senha"
                         onChange={(e) => setPass(e.target.value)}
                     />
                     <Button
-                        // className={styles.card__form__button}
+                        className={styles.card__form__button}
                         type='submit'
                     >
                         Entrar
@@ -91,6 +91,6 @@ export default function CardLogin() {
                 <Link to='/register' className={styles.links_link}>Registre-se</Link>
 
             </Card.Body>
-        </Card>
+        </div>
     )
 }
