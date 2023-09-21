@@ -31,6 +31,7 @@ export const LanguageProvider = ({ children }) => {
     articleInput: "Write what you are thinking",
     articleError: "Error inserting post, check if title and text are filled     ",
     logout: "Logout",
+    
 };
 
   const [text, setText] = useState(english);

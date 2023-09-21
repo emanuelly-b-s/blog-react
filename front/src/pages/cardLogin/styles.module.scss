@@ -14,7 +14,7 @@
     display: flex;
     flex-direction: column;
     min-width: 0;
-    height: var(--bs-card-height) ;
+    height: var(--bs-card-height);
     color: var(--bs-body-color);
     word-wrap: break-word;
     background-color: var(--bs-card-bg);
@@ -24,34 +24,78 @@
     overflow: hidden;
 
 
-    .card__header{
+
+    .card__header {
         padding: 0.8rem var(--bs-card-cap-padding-x);
         margin-bottom: 0;
         color: var(--bs-card-cap-color);
-        background-color:#afafaf2c;
+        background-color: var(--bs-card-cap-bg);
         width: 100%;
         display: flex;
         flex-direction: row;
         align-content: center;
         justify-content: center;
         align-items: center;
+        margin-bottom: 0.5rem;
+        border-bottom: var(--bs-card-border-width) solid var(--bs-card-border-color);
     }
 
+    .card__footer:last-child {
+        border-radius: 0 0 var(--bs-card-inner-border-radius) var(--bs-card-inner-border-radius);
+    }
+
+    .card__footer {
+        padding: var(--bs-card-cap-padding-y) var(--bs-card-cap-padding-x);
+        border-top: var(--bs-card-border-width) solid var(--bs-card-border-color);
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+
+
+        .links__link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            align-content: center;
+            justify-content: center;
+            text-decoration: none;
+            text-decoration: none;
+            color: black;
+            font-weight: 450;
+
+            .link {
+                text-decoration: none;
+                color: black;
+                font-weight: 400;
+            }
+        }
+    }
 
     .card__form {
         display: flex;
-        gap: 1em;
+        gap: 1.5em;
         flex-direction: column;
         border-radius: 10em;
+        align-items: center;
 
 
         .form__control {
             border-radius: 10em;
+            height: 2.6em;
         }
 
         .card__form__button {
-            width: 20em;
+            width: 33%;
+            border-radius: 12rem;
+            margin-bottom: 0.5rem;
+            background-color: #225ca21a;
+            border: none;
+            color: black;
         }
+
+
     }
 
 

@@ -8,12 +8,15 @@ import CryptoJS from 'crypto-js'
 import { Secret } from '../../secret';
 import { Link } from "react-router-dom";
 import { useHistory } from 'react-router-dom';
+import { LanguageContext } from "../../context/language";
+
 
 
 
 export default function CardLogin() {
 
     const { setMessage, setShow, setVariant } = useContext(AlertContext);
+    const { isPortuguese, text } = useContext(LanguageContext);
 
     const navigate = useNavigate();
 
@@ -42,7 +45,7 @@ export default function CardLogin() {
             setVariant('danger');
         }
 
-        
+
     }
 
     function formValid() {
@@ -62,35 +65,41 @@ export default function CardLogin() {
     }
     return (
         <div className={styles.card}>
-                <Card.Title className={styles.card__header}>Login</Card.Title>
+            <Card.Title className={styles.card__header}>Login</Card.Title>
             <Card.Body>
                 <Form
                     className={styles.card__form}
                     onSubmit={handleSubmit}
                 >
                     <Form.Control
-                        value={email} 
+                        value={email}
                         className={styles.form__control}
-                        placeholder="Insira seu e-mail"
+
+                        placeholder={isPortuguese ? "Digite seu email" : "Enter your email."}
                         onChange={(e) => setEmail(e.target.value)}
                     />
                     <Form.Control
                         value={password}
                         className={styles.form__control}
-                        placeholder="Insira sua senha"
+                        placeholder={isPortuguese ? "Digite sua senha" : "Enter your password."}
                         onChange={(e) => setPass(e.target.value)}
                     />
                     <Button
                         className={styles.card__form__button}
                         type='submit'
                     >
-                        Entrar
+                        {isPortuguese ? "Entrar" : "Sign in"}
                     </Button>
                 </Form>
-                Nao possui uma conta?
-                <Link to='/register' className={styles.links_link}>Registre-se</Link>
-
             </Card.Body>
+            <div className={styles.card__footer}>
+                <div className={styles.link}>
+                    <Link className={styles.links__link} to='/register' >{isPortuguese ? "Não possui uma conta?" : "Don't have an account?"}
+                    </Link>
+                    <Link className={styles.links__link} to='/register'>{isPortuguese ? "Registre-se" : "Sign up."}
+                    </Link>
+                </div>
+            </div>
         </div>
     )
 }
