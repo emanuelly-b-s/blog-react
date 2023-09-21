@@ -4,10 +4,13 @@ import axios from "axios";
 import { AiOutlineLike } from "react-icons/ai";
 import styles from "./styles.module.scss";
 import CryptoJS from "crypto-js";
+import { useNavigate, useSearchParams } from "react-router-dom";
+
 
 export default function Post() {
   var [artigos, setArtigos] = useState([]);
   const [liked, setLiked] = useState(false);
+  var navigate = useNavigate();
 
   async function getPosts() {
     await axios.get(`http://localhost:8080/post`).then((response) => {
@@ -23,7 +26,7 @@ export default function Post() {
     const informations = { token };
 
     const jsonCrypto = CryptoJS.AES.encrypt(JSON.stringify(informations).toString(), 'a').toString();
-   
+
 
     try {
       var response = await axios.post(
@@ -37,7 +40,7 @@ export default function Post() {
         getPosts();
       }
 
-    
+
 
     } catch (error) {
       console.error("Erro ao curtir a postagem:", error);
@@ -50,6 +53,10 @@ export default function Post() {
 
 
   useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    if (!token)
+      navigate('/login');
+
     getPosts();
   }, []);
 
